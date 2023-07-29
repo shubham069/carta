@@ -57,6 +57,21 @@ Go to the test folder and run the following script:
 ### Example:
 `./vesting_program_test`
 
+
+## Design Decisions and Assumptions
+- The program uses a TreeMap to efficiently store vested shares data and automatically sort the entries by employee ID and award ID.
+- The precision argument allows users to specify the number of decimal places for fractional shares in the output.
+- The input CSV files are assumed to have a specific format and no header row.
+- The program handles cancel events by subtracting the quantity from vested shares only if the vesting date is on or before the target date.
+
+## Possible Improvements (with no time constraints)
+- Could store the shares in buckets of years. E.g. storing all the shares from 2020 in on map key. So we can just focus on buckets before the target date year and reduce the search space.
+- Implement more robust error handling to handle various exceptional scenarios.
+- Allow users to specify a custom date format for the target date argument.
+- Parallel Processing: For large CSV files with a substantial number of vesting events, parallel processing can be used to handle multiple lines concurrently. This can be achieved using Java's Stream API or other parallel processing frameworks, which can take advantage of multi-core processors and improve processing speed.
+
+
+
 Feel free to run the Vesting Program and Vesting Program Tests using the provided instructions and check the output against the expected results.
 
 If you have any questions or need further assistance, feel free to reach out!
