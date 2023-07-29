@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Compile the Java source file
+javac -cp "junit-jupiter-api-5.8.2.jar:apiguardian-api-1.1.2.jar" VestingProgram_Stage3.java
+
+# Check if compilation was successful before running the program
+if [ $? -eq 0 ]; then
+    # Execute the compiled Java program
+    java -cp "junit-jupiter-api-5.8.2.jar:apiguardian-api-1.1.2.jar:." VestingProgram_Stage3 "$@"
+else
+    echo "Compilation failed. Please check the Java source file for errors."
+fi
+
