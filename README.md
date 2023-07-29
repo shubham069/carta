@@ -1,47 +1,62 @@
 # Vesting Program
 
-This is a Java program that reads vesting events from a CSV file and calculates the total shares vested on or before a given target date. It also considers cancellation events and deducts canceled shares from vested shares.
+## Introduction
+This repository contains the source code for the Vesting Program, which processes CSV files containing vesting events and calculates the total vested shares for each employee and award on or before a given target date.
 
-## How to Run
+## Prerequisites
+- Java Development Kit (JDK) version 8 or above must be installed on your system.
 
-To run the Vesting Program, follow the steps below:
+## Running the Vesting Program
+To run the Vesting Program, use the `vesting_program` script followed by the appropriate arguments. The program accepts three positional arguments:
+1. CSV file path: The path to the CSV file containing the vesting events.
+2. Target date: The target date in the format "yyyy-MM-dd".
+3. Precision (optional): The number of decimal places for the fractional shares (default is 0).
 
-1. Compile the Java source file:
-   `javac VestingProgram_Stage3.java`
+### Examples:
+- To calculate the total vested shares for each employee and award on or before the target date with precision 2:
+`./vesting_program example3.csv 2021-01-01 2`
 
-2. Execute the compiled program with the required arguments:
+- To calculate the total vested shares for each employee and award on or before the target date with default precision (0):
+`./vesting_program example2.csv 2021-01-01`
 
-`Usage: java companies.carta.VestingProgram_Stage3 <csv_file_path> <target_date> <precision>`
-
-- `<csv_file_path>`: The path to the CSV file containing vesting events.
-- `<target_date>`: The target date in the format "yyyy-MM-dd".
-- `<precision>`: The number of decimal places to consider in the output (0 to 6).
-
-Example:
-`java companies.carta.VestingProgram_Stage3 example1.csv 2022-01-01 2`
-
-
-## CSV File Format
-
-The input CSV file should have the following format:
-
-`VEST,<<EMPLOYEE ID>>,<<EMPLOYEE NAME>>,<<AWARD ID>>,<<DATE>>,<<QUANTITY>>` <br>
-`CANCEL,<<EMPLOYEE ID>>,<<EMPLOYEE NAME>>,<<AWARD ID>>,<<DATE>>,<<QUANTITY>>`
+- To calculate the total vested shares for each employee and award on or before the target date and include unvested awards:
+`./vesting_program example1.csv 2020-04-01`
 
 
-- VEST: Represents a vesting event where shares are vested.
-- CANCEL: Represents a cancellation event where shares are canceled.
+## Test Results
+Added few new test scenarios present in three files namely test1.csv, test2.csv and test3.csv
+The expected output for each test scenario is as follows:
+1. Running `./vesting_program test3.csv 2021-01-01 2` should output:
+   ```
+   E001,Alice Smith,ISO-001,1000.55   
+   E001,Alice Smith,ISO-002,99.13    
+   E002,Bobby Jones,ISO-001,50.50  
+   E003,Cat Helms,ISO-003,0.00  
+   ```
+2. Running `./vesting_program test2.csv 2021-01-01 2` should output:
+    ```
+   E001,Alice Smith,ISO-001,500.00
+   E001,Alice Smith,ISO-002,500.50
+   E002,Bobby Jones,ISO-001,200.00
+   E002,Bobby Jones,ISO-002,49.87
+   E003,Cat Helms,ISO-001,300.50
+   E004,David Johnson,ISO-001,1000.00
+    ```
 
-## Output Format
+3. Running `./vesting_program test1.csv 2021-01-01 1` should output:
+   ```
+   E001,Alice Smith,ISO-001,299.8
+   E002,Bobby Jones,ISO-002,801.0
+   E003,Cat Helms,ISO-003,0.0
+   ```
 
-The output will contain the total shares vested on or before the target date for each employee and award. It will be displayed in the following format:
+## Unit Testing with Vesting Program Test
+Added few unit tests for the Vesting Program, use the `vesting_program_test` script. 
+Go to the test folder and run the following script:
 
-`<<EMPLOYEE ID>>, <<EMPLOYEE NAME>>, <<AWARD ID>>, <<TOTAL VESTED SHARES>>`
+### Example:
+`./vesting_program_test`
 
+Feel free to run the Vesting Program and Vesting Program Tests using the provided instructions and check the output against the expected results.
 
-
-## Precision
-
-The precision argument determines the number of decimal places to consider in the output. For example, if precision is set to 2, the output will have two decimal places (e.g., 1000.50). If precision is set to 0, the output will be an integer value (e.g., 1000).
-
-Please compile the VestingProgram_Stage3.java file and run the program with the required arguments as explained in the README. The program will read the CSV file, process the vesting and cancellation events, and output the total shares vested for each employee and award.
+If you have any questions or need further assistance, feel free to reach out!
