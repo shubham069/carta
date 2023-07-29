@@ -22,8 +22,10 @@ public class VestingProgram_Stage3 {
         String targetDateStr = args[1];
         int precision = Integer.parseInt(args[2]);
 
-        if(precision <0  || precision >6)
-            System.err.println("Invalid precision. PLease provide a value between 0 and 6");
+        if (precision < 0 || precision > 6) {
+            System.err.println("Invalid precision. Please provide a value between 0 and 6.");
+            return;
+        }
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date targetDate;
@@ -48,23 +50,30 @@ public class VestingProgram_Stage3 {
                     Date vestingDate = dateFormat.parse(values[4]);
                     double quantity = Double.parseDouble(values[5]);
 
+                    // Store employee names in a separate map
                     employeeNames.put(employeeId, employeeName);
 
-                    if (!vestedShares.containsKey(employeeId + awardId) && !vestingDate.after(targetDate)) {
+                    // Check if the vesting date is on or before the target date and add vested shares
+                    if (!vestingDate.after(targetDate)) {
                         vestedShares.put(employeeId + awardId,
                                 vestedShares.getOrDefault(employeeId + awardId, 0.0) + quantity);
-                    }else{ // to include unvested employee awards
-                        if(!vestedShares.containsKey(employeeId+awardId))
+                    } else { // To include unvested employee awards
+                        if (!vestedShares.containsKey(employeeId + awardId)) {
                             vestedShares.put(employeeId + awardId, 0.0);
+                        }
                     }
-                }
-                else if(values[0].equals("CANCEL")) {
+                } else if (values[0].equals("CANCEL")) {
                     Date vestingDate = dateFormat.parse(values[4]);
                     if (!vestingDate.after(targetDate)) {
                         String employeeId = values[1];
                         String awardId = values[3];
                         double quantity = Double.parseDouble(values[5]);
-                        vestedShares.put(employeeId + awardId, vestedShares.get(employeeId + awardId) - quantity);
+                        // Subtract canceled shares from vested shares for the corresponding award
+                        if(vestedShares.containsKey(employeeId+awardId))
+                            vestedShares.put(employeeId + awardId, vestedShares.get(employeeId + awardId) - quantity);
+                        else{
+                            System.err.println("Cannot cancel the vest as there is no vesting present");
+                        }
                     }
                 }
             }
@@ -73,14 +82,14 @@ public class VestingProgram_Stage3 {
             return;
         }
 
-        // Print the output with employee names
+        // Print the output with employee names and format the decimal precision
         for (Map.Entry<String, Double> entry : vestedShares.entrySet()) {
             String employeeAward = entry.getKey();
             String employeeId = employeeAward.substring(0, 4);
             String awardId = employeeAward.substring(4);
             double totalVestedShares = entry.getValue();
             String employeeName = employeeNames.get(employeeId);
-            String format = "%s, %s, %s, %." + precision + "f\n";
+            String format = "%s,%s,%s,%." + precision + "f\n";
             System.out.printf(format, employeeId, employeeName, awardId, totalVestedShares);
         }
     }

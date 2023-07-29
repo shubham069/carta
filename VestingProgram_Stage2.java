@@ -44,12 +44,14 @@ public class VestingProgram_Stage2 {
                     Date vestingDate = dateFormat.parse(values[4]);
                     int quantity = Integer.parseInt(values[5]);
 
+                    // Store employee names in a separate map
                     employeeNames.put(employeeId, employeeName);
 
-                    if (!vestedShares.containsKey(employeeId + awardId) && !vestingDate.after(targetDate)) {
+                    // Check if the vesting date is on or before the target date and add vested shares
+                    if (!vestingDate.after(targetDate)) {
                         vestedShares.put(employeeId + awardId,
                                 vestedShares.getOrDefault(employeeId + awardId, 0) + quantity);
-                    }else{ // to include unvested employee awards
+                    }else{ // To include unvested employee awards
                         if(!vestedShares.containsKey(employeeId+awardId))
                             vestedShares.put(employeeId + awardId, 0);
                     }
@@ -60,7 +62,12 @@ public class VestingProgram_Stage2 {
                         String employeeId = values[1];
                         String awardId = values[3];
                         int quantity = Integer.parseInt(values[5]);
-                        vestedShares.put(employeeId + awardId, vestedShares.get(employeeId + awardId) - quantity);
+                        // Subtract canceled shares from vested shares for the corresponding award
+                        if(vestedShares.containsKey(employeeId+awardId))
+                            vestedShares.put(employeeId + awardId, vestedShares.get(employeeId + awardId) - quantity);
+                        else{
+                            System.err.println("Cannot cancel the vest as there is no vesting present");
+                        }
                     }
                 }
             }
