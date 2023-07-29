@@ -11,6 +11,7 @@ To run the Vesting Program, use the `vesting_program` script followed by the app
 1. CSV file path: The path to the CSV file containing the vesting events.
 2. Target date: The target date in the format "yyyy-MM-dd".
 3. Precision (optional): The number of decimal places for the fractional shares (default is 0).
+4. Main class is VestingProgram_Stage3, the other 2 are just to showcase the iterative stages.
 
 ### Examples:
 - To calculate the total vested shares for each employee and award on or before the target date with precision 2:
