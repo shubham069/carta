@@ -66,7 +66,7 @@ Go to the test folder and run the following script:
 - The program handles cancel events by subtracting the quantity from vested shares only if the vesting date is on or before the target date.
 
 ## Possible Improvements (with no time constraints)
-- Could store the shares in buckets of years. E.g. storing all the shares from 2020 in on map key. So we can just focus on buckets before the target date year and reduce the search space.
+- Could store the shares in buckets of years. E.g. storing all the shares from 2020 as a map key. So we can just focus on buckets before the target date year and reduce the search space.
 - Implement more robust error handling to handle various exceptional scenarios.
 - Allow users to specify a custom date format for the target date argument.
 - Parallel Processing: For large CSV files with a substantial number of vesting events, parallel processing can be used to handle multiple lines concurrently. This can be achieved using Java's Stream API or other parallel processing frameworks, which can take advantage of multi-core processors and improve processing speed.
